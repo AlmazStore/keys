@@ -382,18 +382,20 @@ app.post('/api/client/register', (req, res) => {
   }
 
   const assignedKeyObj = pool[availableKeyIndex];
-  assignedKeyObj.assignedTo = username.trim();
-  assignedKeyObj.assignedAt = new Date().toISOString();
+  const assignedKey = assignedKeyObj.key;
+
+  // Remove a key do pool permanentemente (uma key = um cliente)
+  pool.splice(availableKeyIndex, 1);
 
   // 4. Registrar a key no banco principal se necessário
   const mainKeys = readKeys();
-  const keyExistsInMain = mainKeys.some(k => k.key.toUpperCase() === assignedKeyObj.key.toUpperCase());
+  const keyExistsInMain = mainKeys.some(k => k.key.toUpperCase() === assignedKey.toUpperCase());
   if (!keyExistsInMain) {
     mainKeys.push({
-      key: assignedKeyObj.key,
+      key: assignedKey,
       status: 'active',
       createdAt: new Date().toISOString(),
-      expiresAt: null, // Lifetime padrão para auto-distribuição
+      expiresAt: null,
       daysTotal: 'lifetime',
       hwid: null,
       clientName: username.trim(),
@@ -402,7 +404,7 @@ app.post('/api/client/register', (req, res) => {
     });
     writeKeys(mainKeys);
   } else {
-    const idx = mainKeys.findIndex(k => k.key.toUpperCase() === assignedKeyObj.key.toUpperCase());
+    const idx = mainKeys.findIndex(k => k.key.toUpperCase() === assignedKey.toUpperCase());
     mainKeys[idx].clientName = username.trim();
     mainKeys[idx].notes = 'Entregue automaticamente no registro do cliente';
     writeKeys(mainKeys);
@@ -412,9 +414,9 @@ app.post('/api/client/register', (req, res) => {
   const newUser = {
     username: username.trim(),
     email: email.trim(),
-    password: password, // Senha de login simples
+    password: password,
     ip: clientIp,
-    assignedKey: assignedKeyObj.key,
+    assignedKey: assignedKey,
     createdAt: new Date().toISOString()
   };
 
