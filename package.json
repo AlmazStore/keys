@@ -1,0 +1,13 @@
+{
+  "name": "almaz-key-system",
+  "version": "1.0.0",
+  "description": "Sistema de gerenciamento e validação de keys para o launcher ALMAZ",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
