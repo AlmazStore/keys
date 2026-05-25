@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALMAZ - Painel Admin de Keys</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo-area">
+      <span class="logo-icon">🐺</span>
+      <span class="logo-text">ALMAZ Keys</span>
+    </div>
+    <ul class="nav-links">
+      <li class="nav-item active" data-target="dashboard">
+        <span class="nav-icon">📊</span> Dashboard
+      </li>
+      <li class="nav-item" data-target="keys-list">
+        <span class="nav-icon">🔑</span> Gerenciar Keys
+      </li>
+      <li class="nav-item" data-target="keys-generator">
+        <span class="nav-icon">⚡</span> Gerar Key
+      </li>
+      <li class="nav-item" data-target="logins-list">
+        <span class="nav-icon">👤</span> Logins do Sistema
+      </li>
+      <li class="nav-item" data-target="pool-manager">
+        <span class="nav-icon">📦</span> Pool de Distribuição
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <span>Painel Admin v1.0</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <h1>Painel de Controle</h1>
+      <div class="user-status">
+        <span class="status-dot"></span> Admin Online
+      </div>
+    </div>
+
+    <!-- DASHBOARD SECTION -->
+    <div id="dashboard" class="content-section active">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon bg-blue">🔑</div>
+          <div class="stat-info">
+            <h3 id="stat-total">0</h3>
+            <p>Total de Keys</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon bg-green">🟢</div>
+          <div class="stat-info">
+            <h3 id="stat-active">0</h3>
+            <p>Keys Ativas</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon bg-orange">🔴</div>
+          <div class="stat-info">
+            <h3 id="stat-expired">0</h3>
+            <p>Keys Expiradas</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon bg-red">⚫</div>
+          <div class="stat-info">
+            <h3 id="stat-revoked">0</h3>
+            <p>Keys Revogadas</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-details">
+        <div class="recent-keys-card">
+          <h2>Keys Recentes</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Cliente</th>
+                  <th>Status</th>
+                  <th>Criado em</th>
+                </tr>
+              </thead>
+              <tbody id="recent-keys-tbody">
+                <!-- Inserido dinamicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEYS LIST SECTION -->
+    <div id="keys-list" class="content-section">
+      <div class="filter-bar">
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Buscar por key, cliente ou HWID...">
+        </div>
+        <div class="filter-box">
+          <select id="status-filter">
+            <option value="all">Todos os Status</option>
+            <option value="active">🟢 Ativa</option>
+            <option value="expired">🔴 Expirada</option>
+            <option value="revoked">⚫ Revogada</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Status</th>
+                <th>Cliente</th>
+                <th>Dias Restantes</th>
+                <th>HWID Vinculado</th>
+                <th>Criado em</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="keys-tbody">
+              <!-- Inserido dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERATOR SECTION -->
+    <div id="keys-generator" class="content-section">
+      <div class="generator-container">
+        <div class="form-card">
+          <h2>Gerador de Licenças</h2>
+          <form id="generator-form">
+            <div class="form-group">
+              <label>Validade em Dias</label>
+              <input type="number" id="gen-days" min="0" placeholder="0 para Lifetime (Sem expiração)" value="30">
+              <div class="quick-buttons">
+                <button type="button" class="btn-quick" data-days="7">7 Dias</button>
+                <button type="button" class="btn-quick" data-days="15">15 Dias</button>
+                <button type="button" class="btn-quick" data-days="30">30 Dias</button>
+                <button type="button" class="btn-quick" data-days="90">90 Dias</button>
+                <button type="button" class="btn-quick" data-days="0">Lifetime</button>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Nome do Cliente</label>
+              <input type="text" id="gen-client" placeholder="Ex: Walison Silva" required>
+            </div>
+
+            <div class="form-group">
+              <label>Notas / Observações</label>
+              <textarea id="gen-notes" rows="3" placeholder="Opcional: Detalhes do cliente, canal de venda..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Quantidade de Keys</label>
+              <input type="number" id="gen-qty" min="1" max="50" value="1">
+            </div>
+
+            <button type="submit" class="btn-generate">GERAR CHAVE(S) DE ACESSO</button>
+          </form>
+        </div>
+
+        <div class="result-card" id="generator-result-card" style="display: none;">
+          <div class="result-header">
+            <h2>Chaves Geradas</h2>
+            <button id="copy-all-btn" class="btn-secondary">Copiar Todas</button>
+          </div>
+          <div class="generated-keys-list" id="generated-keys-list">
+            <!-- Chaves listadas aqui -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGINS LIST SECTION -->
+    <div id="logins-list" class="content-section">
+      <div class="filter-bar">
+        <h2>Usuários Registrados no Portal</h2>
+      </div>
+      <div class="table-card">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Usuário</th>
+                <th>E-mail</th>
+                <th>IP de Cadastro</th>
+                <th>Key Distribuída</th>
+                <th>Criado em</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <!-- Inserido dinamicamente -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- POOL MANAGER SECTION -->
+    <div id="pool-manager" class="content-section">
+      <div class="generator-container">
+        
+        <div class="form-card">
+          <h2>Abastecer Pool de Distribuição</h2>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.4;">
+            Insira chaves válidas abaixo (uma por linha ou separadas por vírgula). O sistema entregará uma destas chaves automaticamente para cada novo cadastro de cliente.
+          </p>
+          
+          <form id="pool-form">
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label>Lista de Chaves</label>
+              <textarea id="pool-keys-textarea" rows="10" style="width:100%; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; color:white; padding:12px; outline:none; font-family:monospace;" placeholder="ALMAZ-A1B2-C3D4&#10;ALMAZ-E5F6-G7H8&#10;..." required></textarea>
+            </div>
+            <button type="submit" class="btn-generate">SALVAR CHAVES NO POOL</button>
+          </form>
+        </div>
+
+        <div class="result-card" style="display: block;">
+          <div class="result-header">
+            <h2>Status do Pool</h2>
+          </div>
+          <div class="stats-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+            <div class="stat-card" style="margin: 0; padding: 15px;">
+              <div class="stat-info">
+                <h3 id="pool-total">0</h3>
+                <p style="font-size: 0.75rem;">Total no Pool</p>
+              </div>
+            </div>
+            <div class="stat-card" style="margin: 0; padding: 15px;">
+              <div class="stat-info">
+                <h3 id="pool-available" style="color: var(--success-green, #10b981);">0</h3>
+                <p style="font-size: 0.75rem;">Disponíveis</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="result-header">
+            <h2>Distribuição Recente</h2>
+          </div>
+          <div class="table-container" style="max-height: 250px; overflow-y: auto;">
+            <table style="width: 100%;">
+              <thead>
+                <tr>
+                  <th>Chave</th>
+                  <th>Usuário</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody id="pool-tbody">
+                <!-- Inserido dinamicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RENEW MODAL -->
+  <div class="modal-overlay" id="renew-modal" style="display: none;">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Renovar Licença</h2>
+        <span class="close-modal" id="close-renew-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Insira a quantidade de dias para adicionar à licença:</p>
+        <input type="number" id="renew-days" min="1" value="30">
+        <input type="hidden" id="renew-key-id">
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-cancel-renew">Cancelar</button>
+        <button class="btn-primary" id="btn-confirm-renew">Renovar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

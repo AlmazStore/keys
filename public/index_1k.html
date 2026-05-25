@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ALMAZ STORE | Área do Membro - 1k</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    /* --- DESIGN SYSTEM (DASHBOARD DARK) --- */
+    :root {
+      --bg: #09090b;
+      --card: #121212;
+      --border: #27272a;
+      --text: #e4e4e7;
+      --neon: #00FF41;
+      --neon-dim: rgba(0, 255, 65, 0.1);
+      --font: 'Inter', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- TOPBAR --- */
+    .topbar {
+        width: 100%;
+        padding: 20px 40px;
+        background: rgba(5, 5, 5, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+    }
+    .logo span { color: var(--neon); }
+
+    .user-badge {
+        background: var(--neon-dim);
+        border: 1px solid var(--neon);
+        color: var(--neon);
+        padding: 5px 12px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    /* --- MAIN CONTENT --- */
+    .main {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      flex: 1;
+    }
+
+    .header-title {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 40px;
+    }
+    .header-title h1 { font-size: 1.8rem; color: #fff; }
+    .date-badge { 
+        background: #18181b; padding: 6px 12px; border-radius: 6px; 
+        font-size: 0.8rem; color: #a1a1aa; border: 1px solid var(--border);
+    }
+
+    /* GRID DASHBOARD */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+    }
+
+    /* CARDS GERAIS */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-2px); }
+    .card h3 { color: #fff; margin-bottom: 15px; font-size: 1.1rem; }
+
+    /* --- MÓDULO PASSO 1 (STEAM) --- */
+    .step-card {
+        background: radial-gradient(circle at top right, #1a237e 0%, #121212 60%); 
+        border: 1px solid #3f3f46;
+        display: flex; align-items: center; justify-content: space-between;
+        cursor: pointer;
+    }
+    .step-card:hover { border-color: #66c0f4; }
+    
+    .step-info { max-width: 70%; }
+    .step-number { 
+        font-size: 0.7rem; font-weight: 900; color: #66c0f4; text-transform: uppercase; 
+        letter-spacing: 1px; margin-bottom: 8px; display: block;
+    }
+    .step-btn-action {
+        background: #66c0f4; color: #000; width: 40px; height: 40px;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; font-weight: bold; box-shadow: 0 0 20px rgba(102, 192, 244, 0.4);
+    }
+
+    /* --- MÓDULO PASSO 2 (SCRIPT) --- */
+    .script-box-card {
+        background: radial-gradient(circle at top right, #2b1c04 0%, #121212 60%);
+        border: 1px solid #d97706;
+        display: flex; align-items: center; justify-content: space-between;
+        cursor: pointer;
+    }
+    .script-box-card:hover { border-color: #f59e0b; }
+    
+    .step-number-orange { 
+        font-size: 0.7rem; font-weight: 900; color: #f59e0b; text-transform: uppercase; 
+        letter-spacing: 1px; margin-bottom: 8px; display: block;
+    }
+    .step-btn-action-orange {
+        background: #f59e0b; color: #000; width: 40px; height: 40px;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; font-weight: bold; box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+    }
+
+    /* --- MÓDULO PASSO 3 (LAUNCHER) --- */
+    .download-box {
+        display: flex; justify-content: space-between; align-items: center;
+        background: radial-gradient(circle at right, #0f2e15 0%, #121212 60%);
+        cursor: pointer;
+    }
+    .download-box:hover { border-color: var(--neon); }
+
+    .dl-info p { color: #a1a1aa; font-size: 0.9rem; max-width: 400px; margin-bottom: 20px; }
+    
+    .btn-download {
+        background: var(--neon); color: #000;
+        padding: 15px 30px; border-radius: 8px; font-weight: 800;
+        text-transform: uppercase; border: none; cursor: pointer;
+        display: flex; align-items: center; gap: 10px;
+        transition: 0.3s;
+    }
+    .btn-download:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(0,255,65,0.3); }
+
+    /* STATUS SIDE */
+    .status-card { text-align: center; }
+    .status-circle {
+        width: 100px; height: 100px; border-radius: 50%;
+        border: 4px solid var(--neon); margin: 0 auto 20px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 2rem; color: var(--neon); background: var(--neon-dim);
+        box-shadow: 0 0 30px rgba(0,255,65,0.1);
+    }
+    .status-badge {
+        background: var(--neon-dim); color: var(--neon);
+        padding: 5px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: 700;
+        border: 1px solid var(--neon); display: inline-block; margin-top: 10px;
+    }
+
+    /* COMMUNITY CARD */
+    .community-card {
+        background: #25D366; /* WhatsApp Green */
+        color: #000;
+        text-align: center;
+    }
+    .community-card h3 { color: #000; margin-bottom: 10px; }
+    .community-card p { color: #000; font-weight: 600; font-size: 0.9rem; margin-bottom: 20px; }
+    .btn-whatsapp-group {
+        background: #fff; color: #25D366; width: 100%; padding: 12px; border-radius: 8px;
+        font-weight: 900; border: none; cursor: pointer; text-transform: uppercase;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.3s;
+    }
+    .btn-whatsapp-group:hover { transform: scale(1.05); }
+
+    /* BOTÃO WHATSAPP FIXO (SUPORTE) */
+    .fab-whatsapp {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background-color: #25D366;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+        cursor: pointer;
+        z-index: 999;
+        transition: transform 0.3s ease;
+        text-decoration: none;
+    }
+    .fab-whatsapp:hover {
+        transform: scale(1.1);
+    }
+    .fab-whatsapp::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px solid #25D366;
+        animation: pulse-green 2s infinite;
+        z-index: -1;
+    }
+    @keyframes pulse-green {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* MODAIS (GERAL) */
+    dialog {
+        background: #111; color: #fff; border: 1px solid #333; border-radius: 16px;
+        padding: 0; width: 90%; max-width: 800px;
+        box-shadow: 0 0 100px rgba(0,0,0,0.9);
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    }
+    dialog::backdrop { background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
+
+    .modal-header {
+        padding: 20px 30px; border-bottom: 1px solid #222;
+        display: flex; justify-content: space-between; align-items: center;
+        background: #0f0f0f;
+    }
+    .modal-close { 
+        background: transparent; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; 
+    }
+    .modal-body { padding: 30px; }
+
+    /* VIDEO CONTAINER */
+    .video-container {
+        width: 100%; aspect-ratio: 16/9; background: #000;
+        position: relative; border-bottom: 1px solid #222;
+        overflow: hidden;
+    }
+    .video-container iframe {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    }
+
+    /* BOTÕES DENTRO DO MODAL */
+    .btn-steam-official {
+        display: block; width: 100%; text-align: center;
+        background: #171a21; color: #fff; padding: 15px; border-radius: 8px;
+        text-decoration: none; font-weight: bold; border: 1px solid #333;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        transition: 0.3s;
+    }
+    .btn-steam-official:hover { background: #66c0f4; color: #000; border-color: #66c0f4; }
+
+    .script-code {
+        background: #000; padding: 15px; border-radius: 8px; border: 1px solid #333;
+        font-family: monospace; color: #00FF41; font-size: 0.85rem;
+        word-break: break-all; margin-bottom: 15px; user-select: all;
+    }
+    .btn-copy {
+        width: 100%; padding: 15px; background: #d97706; color: #000; border-radius: 8px;
+        font-weight: 800; border: none; cursor: pointer; font-size: 0.9rem;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-copy:hover { background: #fff; }
+
+    /* MODAL LAUNCHER (VIDEO) */
+    .btn-launcher-download {
+        display: block; width: 100%; text-align: center;
+        background: var(--neon); color: #000; padding: 15px; border-radius: 8px;
+        text-decoration: none; font-weight: bold; border: none; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        transition: 0.3s;
+    }
+    .btn-launcher-download:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(0,255,65,0.3); }
+
+    /* --- ORDERBUMP: BYPASS DENUVO --- */
+    .bypass-upgrade-card {
+        background: linear-gradient(135deg, rgba(217, 70, 239, 0.1) 0%, rgba(20, 20, 20, 1) 100%);
+        border: 1px dashed #d946ef;
+        box-shadow: 0 0 15px rgba(217, 70, 239, 0.05);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .bypass-upgrade-card:hover {
+        transform: translateY(-2px);
+        border-color: #f0abfc;
+        box-shadow: 0 0 25px rgba(217, 70, 239, 0.15);
+    }
+    .bypass-upgrade-badge {
+        background: #d946ef;
+        color: #000;
+        font-size: 0.65rem;
+        font-weight: 900;
+        padding: 4px 10px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
+    }
+    .bypass-price-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 15px 0;
+    }
+    .bypass-price-old {
+        color: #71717a;
+        text-decoration: line-through;
+        font-size: 0.9rem;
+    }
+    .bypass-price-new {
+        color: #d946ef;
+        font-size: 1.6rem;
+        font-weight: 900;
+        text-shadow: 0 0 10px rgba(217, 70, 239, 0.2);
+    }
+    .btn-bypass-upgrade {
+        background: #d946ef;
+        color: #000;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 900;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: 0.3s;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(217, 70, 239, 0.2);
+    }
+    .btn-bypass-upgrade:hover {
+        background: #fff;
+        color: #000;
+        transform: scale(1.03);
+        box-shadow: 0 6px 20px rgba(217, 70, 239, 0.4);
+    }
+
+    /* --- ORDERBUMP: +40K JOGOS --- */
+    .upgrade-card {
+        background: linear-gradient(135deg, rgba(234, 179, 8, 0.1) 0%, rgba(20, 20, 20, 1) 100%);
+        border: 1px dashed #eab308;
+        box-shadow: 0 0 15px rgba(234, 179, 8, 0.05);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s, border-color 0.2s;
+    }
+    .upgrade-card:hover {
+        transform: translateY(-2px);
+        border-color: #f59e0b;
+        box-shadow: 0 0 25px rgba(234, 179, 8, 0.15);
+    }
+    .upgrade-badge {
+        background: #eab308;
+        color: #000;
+        font-size: 0.65rem;
+        font-weight: 900;
+        padding: 4px 10px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
+    }
+    .upgrade-price-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 15px 0;
+    }
+    .upgrade-price-old {
+        color: #71717a;
+        text-decoration: line-through;
+        font-size: 0.9rem;
+    }
+    .upgrade-price-new {
+        color: #eab308;
+        font-size: 1.6rem;
+        font-weight: 900;
+        text-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
+    }
+    .btn-upgrade {
+        background: #eab308;
+        color: #000;
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 900;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: 0.3s;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(234, 179, 8, 0.2);
+    }
+    .btn-upgrade:hover {
+        background: #fff;
+        color: #000;
+        transform: scale(1.03);
+        box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4);
+    }
+
+    @media (max-width: 900px) {
+        .dashboard-grid { grid-template-columns: 1fr; }
+        .topbar { padding: 15px 20px; }
+        .fab-whatsapp { width: 50px; height: 50px; font-size: 24px; bottom: 20px; right: 20px; }
+    }
+
+    /* --- PORTAL DE LOGIN INTEGRADO --- */
+    .auth-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(5, 5, 5, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      z-index: 10000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .auth-card {
+      background: #121212;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 35px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 40px rgba(0, 255, 65, 0.03);
+      position: relative;
+    }
+    .auth-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .auth-desc {
+      font-size: 0.85rem;
+      color: #a1a1aa;
+      text-align: center;
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+    .auth-group {
+      margin-bottom: 18px;
+    }
+    .auth-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #a1a1aa;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .auth-group input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.25s;
+    }
+    .auth-group input:focus {
+      border-color: var(--neon);
+      box-shadow: 0 0 10px rgba(0, 255, 65, 0.15);
+    }
+    .auth-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--neon);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.25s;
+      margin-top: 10px;
+    }
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 255, 65, 0.3);
+    }
+    .auth-footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #71717a;
+      margin-top: 20px;
+    }
+    .auth-footer a {
+      color: var(--neon);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+    .auth-badge {
+      background: rgba(0, 255, 65, 0.05);
+      border: 1px solid rgba(0, 255, 65, 0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      color: #86efac;
+      margin-bottom: 20px;
+      line-height: 1.4;
+      text-align: center;
+    }
+    /* Toast System */
+    .client-toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100000;
+    }
+    .client-toast {
+      background: #111;
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 8px;
+      border-left: 4px solid var(--neon);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      animation: slideInLeft 0.3s ease;
+    }
+    .client-toast.err {
+      border-left-color: #ef4444;
+    }
+  </style>
+</head>
+<body style="overflow: hidden;">
+
+  <header class="topbar">
+    <div class="logo">ALMAZ<span>STORE</span></div>
+    <div class="user-badge">CLIENTE VIP</div>
+  </header>
+
+  <main class="main">
+    <div class="header-title">
+        <h1>Painel do Cliente - 1.000 Jogos</h1>
+        <div class="date-badge">Servidor: Online 🟢</div>
+    </div>
+
+    <div class="dashboard-grid">
+        
+        <div class="left-col">
+            
+            <div class="card step-card" onclick="openModal('steam')">
+                <div class="step-info">
+                    <span class="step-number">PASSO 01 - OBRIGATÓRIO</span>
+                    <h3>Instalar a Steam Oficial</h3>
+                    <p style="color:#aaa; font-size:0.9rem">Antes de tudo, tenha a plataforma instalada e atualizada.</p>
+                </div>
+                <div class="step-btn-action">➜</div>
+            </div>
+
+            <div class="card script-box-card" onclick="openModal('script')">
+                <div class="step-info">
+                    <span class="step-number-orange">PASSO 02 - CORREÇÃO</span>
+                    <h3>Remover Bugs (PowerShell)</h3>
+                    <p style="color:#aaa; font-size:0.9rem">Evite erros de permissão executando nosso script de limpeza.</p>
+                </div>
+                <div class="step-btn-action-orange">⚙️</div>
+            </div>
+
+            <div class="card download-box" onclick="openModal('launcher')">
+                <div class="dl-info">
+                    <span class="step-number" style="color:var(--neon)">PASSO 03 - FINAL</span>
+                    <h3>Baixar Launcher Almaz</h3>
+                    <p>Com o sistema pronto, baixe e instale nosso aplicativo.</p>
+                    <button class="btn-download">
+                        <span>⬇</span> BAIXAR LAUNCHER (.EXE)
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="right-col">
+            <div class="card status-card">
+                <div class="status-circle">✓</div>
+                <h3>SUA LICENÇA</h3>
+                <div id="client-key-display" style="font-family: monospace; font-size: 1.15rem; color: var(--neon); background: rgba(0,255,65,0.05); border: 1px dashed var(--neon); padding: 8px 12px; border-radius: 6px; margin: 10px 0; font-weight: bold; letter-spacing: 1px; cursor: pointer; text-align: center; text-shadow: 0 0 10px rgba(0,255,65,0.25);" title="Clique para copiar chave">ALMAZ-XXXX-XXXX</div>
+                <div class="status-badge" id="btn-logout-client" style="cursor: pointer; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: var(--danger);">SAIR DA CONTA</div>
+            </div>
+
+            <!-- ORDERBUMP 1: BYPASS DENUVO -->
+            <div class="card bypass-upgrade-card">
+                <div class="bypass-upgrade-badge">⚡ ADD-ON DISPONÍVEL</div>
+                <h3>Bypass Denuvo (Online)</h3>
+                <p style="color:#aaa; font-size:0.85rem; line-height:1.4; margin-bottom:12px;">
+                    Deseja jogar títulos específicos com Denuvo em modo Online? Adquira a licença do Bypass!
+                </p>
+                <div class="bypass-price-box">
+                    <span class="bypass-price-old">De R$ 29,90</span>
+                    <span class="bypass-price-new">Por R$ 14,90</span>
+                </div>
+                <!-- Link direciona para o WhatsApp de suporte com mensagem pré-definida de interesse -->
+                <a href="https://wa.me/5568999215897?text=Ol%C3%A1%2C%20gostaria%20de%20adquirir%20o%20Bypass%20Denuvo%20para%20jogar%20online%20na%20Almaz%20Store" target="_blank" class="btn-bypass-upgrade">
+                    <span>🔓</span> LIBERAR BYPASS AGORA
+                </a>
+            </div>
+
+            <!-- ORDERBUMP 2: +40K JOGOS -->
+            <div class="card upgrade-card">
+                <div class="upgrade-badge">🔥 UPGRADE DISPONÍVEL</div>
+                <h3>+40.000 JOGOS</h3>
+                <ul style="list-style: none; margin: 15px 0; padding: 0; font-size: 0.85rem; line-height: 1.6; color: #a1a1aa; text-align: left;">
+                    <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;"><span style="color: #eab308;">✓</span> <b>+40.000 jogos</b> (Catálogo Completo)</li>
+                    <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;"><span style="color: #eab308;">✓</span> Todos os Lançamentos 2024/2025</li>
+                    <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;"><span style="color: #eab308;">✓</span> Atualizações Vitalícias</li>
+                    <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;"><span style="color: #eab308;">✓</span> Anti-ban e seguro</li>
+                    <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;"><span style="color: #eab308;">✓</span> Suporte WhatsApp Prioritário 24h</li>
+                    <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;"><span style="color: #eab308;">✓</span> Acesso a Jogos Rockstar / Ubisoft</li>
+                    <li style="margin-bottom: 6px; display: flex; align-items: center; gap: 8px;"><span style="color: #eab308;">✓</span> Online Desbloqueado</li>
+                </ul>
+                <div class="upgrade-price-box">
+                    <span class="upgrade-price-old">De R$ 49,97</span>
+                    <span class="upgrade-price-new">Por R$ 29,97</span>
+                </div>
+                <a href="https://ggcheckout.app/checkout/v4/B0t9HN3A2rRkdzZxgAXR" target="_blank" class="btn-upgrade">
+                    <span>⚡</span> LIBERAR +40 MIL JOGOS
+                </a>
+            </div>
+            
+            <div class="card community-card">
+                <h3>GRUPO VIP</h3>
+                <p>Entre na comunidade oficial no WhatsApp e receba novidades.</p>
+                <button class="btn-whatsapp-group" onclick="window.open('https://chat.whatsapp.com/B8fjt3MBSdQGT6pUSTMp49', '_blank')">
+                    ENTRAR NO GRUPO
+                </button>
+            </div>
+        </div>
+
+    </div>
+  </main>
+
+  <a href="https://chat.whatsapp.com/B8fjt3MBSdQGT6pUSTMp49" target="_blank" class="fab-whatsapp" title="Grupo VIP no WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <dialog id="modal-steam">
+      <div class="modal-header">
+          <h3>Passo 1: Instalar Steam</h3>
+          <button class="modal-close" onclick="closeModal('steam')">✕</button>
+      </div>
+      <div class="video-container">
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/e8b9imle-Js" title="Instalar Steam" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="modal-body">
+          <p style="color:#aaa; line-height:1.6; margin-bottom:20px">
+              Nosso sistema funciona "dentro" da Steam. Siga o vídeo acima para instalar a versão correta.<br><br>
+              1. Clique no botão abaixo para baixar.<br>
+              2. Instale e faça login com sua conta gratuita.
+          </p>
+          <a href="https://store.steampowered.com/about/" target="_blank" class="btn-steam-official">
+              <span style="font-size:1.2rem">☁️</span> BAIXAR STEAM OFICIAL
+          </a>
+      </div>
+  </dialog>
+
+  <dialog id="modal-script">
+      <div class="modal-header">
+          <h3>Passo 2: Script Anti-Bug</h3>
+          <button class="modal-close" onclick="closeModal('script')">✕</button>
+      </div>
+      <div class="video-container">
+           <iframe width="100%" height="100%" src="https://www.youtube.com/embed/cOUO-2fmybA" title="Remover Bugs" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="modal-body">
+          <p style="color:#aaa; line-height:1.6; margin-bottom:20px">
+              Para evitar erros de "Acesso Negado", execute este comando rápido:<br><br>
+              1. Copie o código abaixo.<br>
+              2. Abra o menu Iniciar, digite <b>"PowerShell"</b>.<br>
+              3. Clique com botão direito e <b>"Executar como Administrador"</b>.<br>
+              4. Cole o código e dê Enter.
+          </p>
+          
+          <div class="script-code" id="psCode">
+              iwr -useb "https://raw.githubusercontent.com/master18032008/RemoverBugs1/refs/heads/main/Remover-bugs.ps1" | iex
+          </div>
+          
+          <button class="btn-copy" onclick="copyCode()">
+              <span>📋</span> COPIAR CÓDIGO AGORA
+          </button>
+      </div>
+  </dialog>
+
+  <dialog id="modal-launcher">
+      <div class="modal-header">
+          <h3>Passo 3: Instalar o Launcher Almaz</h3>
+          <button class="modal-close" onclick="closeModal('launcher')">✕</button>
+      </div>
+      <div class="video-container">
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/CfldgBewzV8" title="Instalar Launcher" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="modal-body">
+          <p style="color:#aaa; line-height:1.6; margin-bottom:20px">
+              Agora vamos instalar o software principal. Siga o vídeo acima para garantir que tudo funcione.<br><br>
+              1. Baixe o arquivo ZIP.<br>
+              2. Extraia e execute o "OVERISE.exe" (Launcher Almaz) como Administrador.<br>
+              3. Clique em "Desbloquear Steam".
+          </p>
+          
+          <button class="btn-launcher-download" onclick="window.open('https://drive.google.com/file/d/18EnDm9sPjyA0hofSYS6dbsuBbh02qL5e/view?usp=drive_link', '_blank')">
+              <span>⬇</span> BAIXAR LAUNCHER ALMAZ
+          </button>
+      </div>
+  </dialog>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="client-toast-container" id="toast-container-client"></div>
+
+  <!-- AUTHENTICATION OVERLAY (LOGIN/REGISTER) -->
+  <div class="auth-overlay" id="auth-overlay" style="display: flex;">
+    <div class="auth-card" id="auth-card">
+      
+      <!-- LOGIN VIEW -->
+      <div id="login-view" style="display: block;">
+        <h2 class="auth-title">Área do Membro - ALMAZ</h2>
+        <p class="auth-desc">Faça login para ter acesso aos seus downloads e licença.</p>
+        
+        <form id="client-login-form">
+          <div class="auth-group">
+            <label>Nome de Usuário</label>
+            <input type="text" id="client-login-user" placeholder="Seu usuário" required>
+          </div>
+          <div class="auth-group">
+            <label>Senha</label>
+            <input type="password" id="client-login-pass" placeholder="Sua senha" required>
+          </div>
+          <button type="submit" class="auth-btn">Entrar</button>
+        </form>
+        
+        <div class="auth-footer">
+          Não tem uma conta? <a href="#" id="link-to-register">Crie uma aqui</a>
+        </div>
+      </div>
+
+      <!-- REGISTER VIEW -->
+      <div id="register-view" style="display: none;">
+        <h2 class="auth-title">Cadastrar Conta</h2>
+        <p class="auth-desc">Crie sua conta para receber sua chave de acesso vitalícia.</p>
+        
+        <div class="auth-badge">
+          ⚠️ Limite: Apenas <strong>1 conta</strong> por computador (IP).
+        </div>
+
+        <form id="client-register-form">
+          <div class="auth-group">
+            <label>Nome de Usuário</label>
+            <input type="text" id="client-reg-user" placeholder="Escolha um usuário" required>
+          </div>
+          <div class="auth-group">
+            <label>E-mail</label>
+            <input type="email" id="client-reg-email" placeholder="seuemail@exemplo.com" required>
+          </div>
+          <div class="auth-group">
+            <label>Senha de Acesso</label>
+            <input type="password" id="client-reg-pass" placeholder="Crie uma senha" required>
+          </div>
+          <button type="submit" class="auth-btn">Registrar e Ativar</button>
+        </form>
+        
+        <div class="auth-footer">
+          Já tem uma conta? <a href="#" id="link-to-login">Faça Login</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+      const API_URL = 'https://keys-server-9zq2.onrender.com';
+
+      // Elementos do Modal do Produto
+      function openModal(type) {
+          document.getElementById(`modal-${type}`).showModal();
+      }
+
+      function closeModal(type) {
+          document.getElementById(`modal-${type}`).close();
+      }
+
+      function copyCode() {
+          const codeText = document.getElementById("psCode").innerText.trim();
+          navigator.clipboard.writeText(codeText).then(() => {
+              alert("Código copiado! Abra o PowerShell como Administrador e cole.");
+          });
+      }
+
+      // Fecha ao clicar fora do Dialog
+      window.onclick = function(event) {
+          if (event.target.tagName === 'DIALOG') {
+              event.target.close();
+          }
+      }
+
+      // --- LOGICA DE AUTENTICAÇÃO INTEGRADA ---
+      const authOverlay = document.getElementById('auth-overlay');
+      const loginView = document.getElementById('login-view');
+      const registerView = document.getElementById('register-view');
+      const linkToRegister = document.getElementById('link-to-register');
+      const linkToLogin = document.getElementById('link-to-login');
+      
+      const loginForm = document.getElementById('client-login-form');
+      const registerForm = document.getElementById('client-register-form');
+      const keyDisplay = document.getElementById('client-key-display');
+      const btnLogout = document.getElementById('btn-logout-client');
+      const toastContainer = document.getElementById('toast-container-client');
+
+      // Chamar diretamente (script está no final do body, DOM já está pronto)
+      checkSession();
+
+      function checkSession() {
+          const savedUser = localStorage.getItem('almaz_user');
+          if (savedUser) {
+              try {
+                  const user = JSON.parse(savedUser);
+                  authOverlay.style.display = 'none';
+                  document.body.style.overflow = 'auto';
+                  keyDisplay.textContent = user.assignedKey;
+              } catch (e) {
+                  localStorage.removeItem('almaz_user');
+                  showAuthModal();
+              }
+          } else {
+              showAuthModal();
+          }
+      }
+
+      function showAuthModal() {
+          authOverlay.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+      }
+
+      linkToRegister.addEventListener('click', (e) => {
+          e.preventDefault();
+          loginView.style.display = 'none';
+          registerView.style.display = 'block';
+      });
+
+      linkToLogin.addEventListener('click', (e) => {
+          e.preventDefault();
+          registerView.style.display = 'none';
+          loginView.style.display = 'block';
+      });
+
+      // Formulario de Login
+      loginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const username = document.getElementById('client-login-user').value.trim();
+          const password = document.getElementById('client-login-pass').value;
+
+          try {
+              const res = await fetch(`${API_URL}/api/client/login`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ username, password })
+              });
+              const data = await res.json();
+              
+              if (res.ok && data.success) {
+                  showClientToast('Login realizado com sucesso!', 'success');
+                  localStorage.setItem('almaz_user', JSON.stringify(data.user));
+                  setTimeout(checkSession, 800);
+              } else {
+                  showClientToast(data.message || 'Dados incorretos.', 'error');
+                  shakeCard();
+              }
+          } catch (err) {
+              showClientToast('Não foi possível conectar ao servidor.', 'error');
+              shakeCard();
+          }
+      });
+
+      // Formulario de Registro
+      registerForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const username = document.getElementById('client-reg-user').value.trim();
+          const email = document.getElementById('client-reg-email').value.trim();
+          const password = document.getElementById('client-reg-pass').value;
+
+          try {
+              const res = await fetch(`${API_URL}/api/client/register`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ username, email, password })
+              });
+              const data = await res.json();
+
+              if (res.ok && data.success) {
+                  showClientToast(data.message, 'success');
+                  
+                  const sessionUser = {
+                      username: data.user.username,
+                      email: email,
+                      assignedKey: data.user.assignedKey
+                  };
+                  localStorage.setItem('almaz_user', JSON.stringify(sessionUser));
+                  setTimeout(checkSession, 1000);
+              } else {
+                  showClientToast(data.message || 'Erro ao registrar.', 'error');
+                  shakeCard();
+              }
+          } catch (err) {
+              showClientToast('Não foi possível conectar ao servidor.', 'error');
+              shakeCard();
+          }
+      });
+
+      // Botão de Logout
+      btnLogout.addEventListener('click', () => {
+          localStorage.removeItem('almaz_user');
+          showClientToast('Sessão encerrada.', 'success');
+          checkSession();
+      });
+
+      // Clique para copiar chave
+      keyDisplay.addEventListener('click', () => {
+          const key = keyDisplay.textContent;
+          if (!key || key.includes('XXXX')) return;
+
+          navigator.clipboard.writeText(key).then(() => {
+              showClientToast('Licença copiada com sucesso!', 'success');
+          });
+      });
+
+      function showClientToast(msg, type = 'success') {
+          const toast = document.createElement('div');
+          toast.className = `client-toast ${type === 'error' ? 'err' : ''}`;
+          toast.textContent = msg;
+          toastContainer.appendChild(toast);
+          setTimeout(() => {
+              toast.remove();
+          }, 3500);
+      }
+
+      function shakeCard() {
+          const card = document.getElementById('auth-card');
+          card.classList.add('shake');
+          setTimeout(() => card.classList.remove('shake'), 400);
+      }
+  </script>
+
+</body>
+</html>
