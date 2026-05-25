@@ -286,6 +286,226 @@ app.post('/api/validate', (req, res) => {
   });
 });
 
+// BANCOS DE DADOS DO PORTAL DO CLIENTE
+const USERS_PATH = path.join(__dirname, 'data', 'users.json');
+const POOL_PATH = path.join(__dirname, 'data', 'key_pool.json');
+
+function readUsers() {
+  try {
+    if (!fs.existsSync(USERS_PATH)) {
+      fs.writeFileSync(USERS_PATH, JSON.stringify([]));
+      return [];
+    }
+    return JSON.parse(fs.readFileSync(USERS_PATH, 'utf8') || '[]');
+  } catch (error) {
+    console.error('Erro ao ler usuários:', error);
+    return [];
+  }
+}
+
+function writeUsers(users) {
+  try {
+    fs.writeFileSync(USERS_PATH, JSON.stringify(users, null, 2), 'utf8');
+  } catch (error) {
+    console.error('Erro ao salvar usuários:', error);
+  }
+}
+
+function readPool() {
+  try {
+    if (!fs.existsSync(POOL_PATH)) {
+      fs.writeFileSync(POOL_PATH, JSON.stringify([]));
+      return [];
+    }
+    return JSON.parse(fs.readFileSync(POOL_PATH, 'utf8') || '[]');
+  } catch (error) {
+    console.error('Erro ao ler o pool de chaves:', error);
+    return [];
+  }
+}
+
+function writePool(pool) {
+  try {
+    fs.writeFileSync(POOL_PATH, JSON.stringify(pool, null, 2), 'utf8');
+  } catch (error) {
+    console.error('Erro ao salvar o pool de chaves:', error);
+  }
+}
+
+// Rotas do Portal do Cliente (Registro & Login)
+
+// Registro com Verificação de IP e Entrega de Key Automática
+app.post('/api/client/register', (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ success: false, message: 'Todos os campos são obrigatórios.' });
+  }
+
+  const normalizedUser = username.trim().toLowerCase();
+  const normalizedEmail = email.trim().toLowerCase();
+
+  // Capturar IP real do cliente
+  let clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress || req.ip;
+  if (clientIp && clientIp.includes(',')) {
+    clientIp = clientIp.split(',')[0].trim();
+  }
+  if (clientIp === '::1' || clientIp === '::ffff:127.0.0.1') {
+    clientIp = '127.0.0.1';
+  }
+
+  const users = readUsers();
+
+  // 1. Limite de 1 conta por IP
+  const ipExists = users.some(u => u.ip === clientIp);
+  if (ipExists) {
+    return res.status(400).json({ success: false, message: 'Apenas uma conta é permitida por computador (IP).' });
+  }
+
+  // 2. Impedir usuários e e-mails duplicados
+  if (users.some(u => u.username.toLowerCase() === normalizedUser)) {
+    return res.status(400).json({ success: false, message: 'Nome de usuário já cadastrado.' });
+  }
+  if (users.some(u => u.email.toLowerCase() === normalizedEmail)) {
+    return res.status(400).json({ success: false, message: 'E-mail já cadastrado.' });
+  }
+
+  // 3. Pegar uma key disponível do Pool
+  const pool = readPool();
+  const availableKeyIndex = pool.findIndex(k => k.assignedTo === null);
+
+  if (availableKeyIndex === -1) {
+    return res.status(503).json({ 
+      success: false, 
+      message: 'Desculpe, não há chaves de acesso disponíveis no momento. Entre em contato com o suporte.' 
+    });
+  }
+
+  const assignedKeyObj = pool[availableKeyIndex];
+  assignedKeyObj.assignedTo = username.trim();
+  assignedKeyObj.assignedAt = new Date().toISOString();
+
+  // 4. Registrar a key no banco principal se necessário
+  const mainKeys = readKeys();
+  const keyExistsInMain = mainKeys.some(k => k.key.toUpperCase() === assignedKeyObj.key.toUpperCase());
+  if (!keyExistsInMain) {
+    mainKeys.push({
+      key: assignedKeyObj.key,
+      status: 'active',
+      createdAt: new Date().toISOString(),
+      expiresAt: null, // Lifetime padrão para auto-distribuição
+      daysTotal: 'lifetime',
+      hwid: null,
+      clientName: username.trim(),
+      notes: 'Entregue automaticamente no registro do cliente',
+      usedAt: null
+    });
+    writeKeys(mainKeys);
+  } else {
+    const idx = mainKeys.findIndex(k => k.key.toUpperCase() === assignedKeyObj.key.toUpperCase());
+    mainKeys[idx].clientName = username.trim();
+    mainKeys[idx].notes = 'Entregue automaticamente no registro do cliente';
+    writeKeys(mainKeys);
+  }
+
+  // 5. Salvar usuário
+  const newUser = {
+    username: username.trim(),
+    email: email.trim(),
+    password: password, // Senha de login simples
+    ip: clientIp,
+    assignedKey: assignedKeyObj.key,
+    createdAt: new Date().toISOString()
+  };
+
+  users.push(newUser);
+  writeUsers(users);
+  writePool(pool);
+
+  res.status(201).json({
+    success: true,
+    message: 'Conta cadastrada e licença gerada com sucesso!',
+    user: {
+      username: newUser.username,
+      assignedKey: newUser.assignedKey
+    }
+  });
+});
+
+// Login do Cliente
+app.post('/api/client/login', (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ success: false, message: 'Todos os campos são obrigatórios.' });
+  }
+
+  const users = readUsers();
+  const user = users.find(u => u.username.toLowerCase() === username.trim().toLowerCase() && u.password === password);
+
+  if (!user) {
+    return res.status(401).json({ success: false, message: 'Nome de usuário ou senha incorretos.' });
+  }
+
+  res.json({
+    success: true,
+    message: 'Login realizado com sucesso!',
+    user: {
+      username: user.username,
+      email: user.email,
+      assignedKey: user.assignedKey
+    }
+  });
+});
+
+// Rotas Administrativas de Monitoramento e Pool de Chaves
+
+// Obter todos os logins
+app.get('/api/admin/users', (req, res) => {
+  const users = readUsers();
+  res.json(users);
+});
+
+// Obter o pool de keys
+app.get('/api/admin/pool', (req, res) => {
+  const pool = readPool();
+  res.json(pool);
+});
+
+// Abastecer o pool de keys
+app.post('/api/admin/pool/add', (req, res) => {
+  const { keysText } = req.body;
+
+  if (!keysText) {
+    return res.status(400).json({ message: 'Lista de chaves é necessária.' });
+  }
+
+  const keysArray = keysText
+    .split(/[\n,]/)
+    .map(k => k.trim().toUpperCase())
+    .filter(k => k.length > 0);
+
+  const pool = readPool();
+  let addedCount = 0;
+
+  keysArray.forEach(k => {
+    if (!pool.some(entry => entry.key === k)) {
+      pool.push({
+        key: k,
+        assignedTo: null,
+        assignedAt: null
+      });
+      addedCount++;
+    }
+  });
+
+  writePool(pool);
+  res.json({ 
+    message: `${addedCount} chaves novas foram importadas com sucesso para o pool de distribuição.`, 
+    pool 
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });

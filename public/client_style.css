@@ -302,6 +302,56 @@ input:focus {
   background: rgba(220, 38, 38, 0.05);
 }
 
+/* DOWNLOAD SECTION */
+.download-section {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.download-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.download-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-download-loader {
+  flex: 1;
+  display: block;
+  padding: 12px 8px;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.btn-download-loader:hover {
+  background: rgba(220, 38, 38, 0.25);
+  border-color: var(--primary-red);
+  transform: translateY(-1px);
+}
+
+.btn-download-store {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.btn-download-store:hover {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: var(--success-green);
+}
+
 /* TOAST NOTIFICATIONS */
 .toast-container {
   position: fixed;
