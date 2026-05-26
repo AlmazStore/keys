@@ -548,6 +548,71 @@
       line-height: 1.4;
       text-align: center;
     }
+    /* --- ORDERBUMP: JOGOS AVULSOS --- */
+    .avulso-card {
+      border: 1px solid #3b82f6 !important;
+      background: radial-gradient(circle at top left, #0c1a3a 0%, #121212 70%) !important;
+    }
+    .avulso-badge {
+      display: inline-block;
+      background: rgba(59,130,246,0.15);
+      border: 1px solid #3b82f6;
+      color: #60a5fa;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .avulso-card h3 { color: #fff; font-size: 1rem; margin-bottom: 8px; }
+    .avulso-card p  { color: #a1a1aa; font-size: 0.83rem; line-height: 1.5; margin-bottom: 14px; }
+    .btn-avulso {
+      display: block; width: 100%; text-align: center;
+      background: #3b82f6; color: #fff;
+      padding: 13px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 800;
+      text-decoration: none; text-transform: uppercase;
+      letter-spacing: 0.5px; transition: 0.3s;
+    }
+    .btn-avulso:hover { transform: scale(1.02); box-shadow: 0 0 18px rgba(59,130,246,0.4); }
+
+    /* --- ORDERBUMP: BUNDLE BYPASS + 40K --- */
+    .bundle-card {
+      border: 1px solid #f59e0b !important;
+      background: radial-gradient(circle at top right, #1a1200 0%, #121212 70%) !important;
+    }
+    .bundle-badge {
+      display: inline-block;
+      background: rgba(245,158,11,0.15);
+      border: 1px solid #f59e0b;
+      color: #fbbf24;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .bundle-card h3 { color: #fff; font-size: 1rem; margin-bottom: 8px; }
+    .bundle-card p  { color: #a1a1aa; font-size: 0.83rem; line-height: 1.5; margin-bottom: 12px; }
+    .bundle-list { list-style: none; margin: 0 0 14px; padding: 0; font-size: 0.82rem; color: #a1a1aa; }
+    .bundle-list li { margin-bottom: 5px; display: flex; align-items: center; gap: 7px; }
+    .bundle-price-box { display: flex; flex-direction: column; margin-bottom: 14px; }
+    .bundle-price-old { font-size: 0.78rem; color: #71717a; text-decoration: line-through; }
+    .bundle-price-new { font-size: 1.4rem; font-weight: 900; color: #fbbf24; }
+    .btn-bundle {
+      display: block; width: 100%; text-align: center;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000; padding: 13px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 800;
+      text-decoration: none; text-transform: uppercase;
+      letter-spacing: 0.5px; transition: 0.3s;
+    }
+    .btn-bundle:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(245,158,11,0.4); }
+
     /* Toast System */
     .client-toast-container {
       position: fixed;
@@ -626,6 +691,35 @@
                 <h3>SUA LICENÇA</h3>
                 <div id="client-key-display" style="font-family: monospace; font-size: 1.15rem; color: var(--neon); background: rgba(0,255,65,0.05); border: 1px dashed var(--neon); padding: 8px 12px; border-radius: 6px; margin: 10px 0; font-weight: bold; letter-spacing: 1px; cursor: pointer; text-align: center; text-shadow: 0 0 10px rgba(0,255,65,0.25);" title="Clique para copiar chave">ALMAZ-XXXX-XXXX</div>
                 <div class="status-badge" id="btn-logout-client" style="cursor: pointer; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); color: var(--danger);">SAIR DA CONTA</div>
+            </div>
+
+            <!-- ORDERBUMP: JOGOS AVULSOS -->
+            <div class="card avulso-card" style="padding: 20px;">
+              <div class="avulso-badge">🎮 Adicionar Jogos</div>
+              <h3>Jogos Avulsos</h3>
+              <p>Quer um jogo específico? Solicite qualquer título do catálogo Steam e adicionamos por uma <strong style="color:#60a5fa;">taxa simbólica</strong>. Rápido e sem complicação.</p>
+              <a href="https://wa.me/5568999215897?text=Ol%C3%A1%2C%20sou%20cliente%20Almaz%20Store%20e%20gostaria%20de%20solicitar%20um%20jogo%20avulso!" target="_blank" class="btn-avulso">
+                💬 SOLICITAR VIA WHATSAPP
+              </a>
+            </div>
+
+            <!-- ORDERBUMP: BUNDLE BYPASS + 40K -->
+            <div class="card bundle-card" style="padding: 20px;">
+              <div class="bundle-badge">🔥 Oferta Combo</div>
+              <h3>Bypass Denuvo + 40k Jogos</h3>
+              <ul class="bundle-list">
+                <li><span style="color:#fbbf24;">✓</span> <b>+40.000 jogos</b> desbloqueados</li>
+                <li><span style="color:#fbbf24;">✓</span> Bypass Denuvo Online incluso</li>
+                <li><span style="color:#fbbf24;">✓</span> Rockstar, Ubisoft e mais</li>
+                <li><span style="color:#fbbf24;">✓</span> Atualizações vitalícias</li>
+              </ul>
+              <div class="bundle-price-box">
+                <span class="bundle-price-old">De R$ 44,87</span>
+                <span class="bundle-price-new">R$ 37,90</span>
+              </div>
+              <a href="https://wa.me/5568999215897?text=Ol%C3%A1%2C%20quero%20o%20combo%20Bypass%20Denuvo%20%2B%2040k%20Jogos%20por%20R%2437%2C90!" target="_blank" class="btn-bundle">
+                ⚡ QUERO O COMBO COMPLETO
+              </a>
             </div>
 
             <!-- ORDERBUMP 1: BYPASS DENUVO -->
